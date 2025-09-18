@@ -1,87 +1,140 @@
-# Welcome to React Router!
+ResuMind — AI Resume Analyzer
+AI-powered resume analyzer that securely uploads resumes, reads a job description, generates ATS-style scores and structured feedback using free client-side AI via Puter.js, and presents results in a responsive, production-ready UI.
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Features
+Serverless architecture: auth, storage, and AI from the frontend via Puter.js.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+Secure sign-in/out with persistent session handling.
 
-## Features
+Resume upload with PDF-to-image preview and metadata capture.
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+Job description input with configurable fields.
 
-## Getting Started
+AI evaluation: ATS score + category feedback (tone/style, content, structure, skills).
 
-### Installation
+Clean UI: responsive grid, cards, and feedback detail page.
 
-Install the dependencies:
+Data utilities: list user submissions, wipe/reset demo data.
 
-```bash
-npm install
-```
+Type-safe codebase with TypeScript and centralized state via Zustand.
 
-### Development
+Tech stack
+Frontend: React, React Router v7, TypeScript, Tailwind CSS v4, Vite.
 
-Start the development server with HMR:
+State: Zustand (global store for Puter integration and app state).
 
-```bash
-npm run dev
-```
+Cloud & AI: Puter.js (auth, storage, AI).
 
-Your application will be available at `http://localhost:5173`.
+Utilities: PDF rendering/preview worker, class utilities (clsx, tailwind-merge).
 
-## Building for Production
+Getting started
+Prerequisites
 
-Create a production build:
+Node.js 18+ and npm or pnpm or yarn.
 
-```bash
-npm run build
-```
+A Puter account for local testing.
 
-## Deployment
+Installation
 
-### Docker Deployment
+Clone the repository.
 
-To build and run using Docker:
+Install dependencies with preferred package manager.
 
-```bash
-docker build -t my-app .
+Copy provided styles/assets into public and app CSS if using a kit.
 
-# Run the container
-docker run -p 3000:3000 my-app
-```
+Start the dev server at the indicated localhost port.
 
-The containerized application can be deployed to any platform that supports Docker, including:
+Environment
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+No server environment variables required for core flows.
 
-### DIY Deployment
+Puter.js is loaded via a client-side script tag in the root layout.
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
+If adding custom guards or quotas, create a local config file and import where needed.
 
-Make sure to deploy the output of `npm run build`
+Run scripts
+dev: Start Vite dev server with HMR.
 
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
+build: Production build.
 
-## Styling
+preview: Preview the production build locally.
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+lint/format (optional): Run linters/formatters if configured.
 
----
+Project structure
+app/: application code
 
-Built with ❤️ using React Router.
+routes/: route files (home, auth, upload, review)
+
+components/: UI units (Navbar, ResumeCard, ScoreCircle, Feedback sections)
+
+lib/: Puter store/wrapper and helpers
+
+types/: global and domain typings
+
+constants/: mock data and prompt schemas for development
+
+public/: static assets (icons, images, favicons)
+
+tailwind config + app.css: theme tokens, utilities, component classes
+
+Core flows
+Authentication
+
+Sign-in/out handled via a centralized store that wraps Puter auth.
+
+Loading/auth states exposed via hooks for top-level UX.
+
+Guarded routes redirect unauthenticated users to auth with return paths.
+
+Upload
+
+Form captures candidate info, job details, and PDF file.
+
+Files uploaded to Puter FS with progress and error states.
+
+PDF preview generated as image for card display.
+
+AI evaluation
+
+Submit resume context + job description to AI endpoint via Puter.
+
+Strict response schema: overall score and per-category feedback.
+
+Response parsing includes validation and safe fallbacks.
+
+Data listing and detail
+
+Home lists user submissions with thumbnails and scores.
+
+Clicking a card opens the review page with full feedback.
+
+Wipe/reset clears demo data quickly during development.
+
+Configuration
+Prompt schema
+
+Keep prompts versioned and centralized; include expected JSON shape.
+
+Add guards for missing or malformed fields; provide defaults.
+
+File constraints
+
+Enforce max file size and supported types (e.g., PDF).
+
+Show progressive loading indicators for previews and uploads.
+
+UI/Styling
+
+Tailwind v4 utilities plus a small set of component classes (e.g., primary button, text gradient).
+
+ScoreCircle rendered as a controlled SVG component for ATS score.
+
+Deployment
+Build using the production script.
+
+Deploy static assets to a static host or CDN.
+
+Ensure the Puter script loads on production domains and test auth/storage/AI end-to-end.
+
+Provide a short runbook for redeploys and resets.
